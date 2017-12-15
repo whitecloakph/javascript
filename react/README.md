@@ -287,72 +287,8 @@
   ))}
   ```
 
-  TODO consult team about this:
-
-  - Always define explicit defaultProps for all non-required props.
-
-  > Why? propTypes are a form of documentation, and providing defaultProps means the reader of your code doesn’t have to assume as much. In addition, it can mean that your code can omit certain type checks.
-
-  ```jsx
-  // bad
-  function SFC({ foo, bar, children }) {
-    return <div>{foo}{bar}{children}</div>;
-  }
-  SFC.propTypes = {
-    foo: PropTypes.number.isRequired,
-    bar: PropTypes.string,
-    children: PropTypes.node,
-  };
-
-  // good
-  function SFC({ foo, bar, children }) {
-    return <div>{foo}{bar}{children}</div>;
-  }
-  SFC.propTypes = {
-    foo: PropTypes.number.isRequired,
-    bar: PropTypes.string,
-    children: PropTypes.node,
-  };
-  SFC.defaultProps = {
-    bar: '',
-    children: null,
-  };
-  ```
-
   - Use spread props sparingly.
   > Why? Otherwise you're more likely to pass unnecessary props down to components. And for React v15.6.1 and older, you could [pass invalid HTML attributes to the DOM](https://reactjs.org/blog/2017/09/08/dom-attributes-in-react-16.html).
-
-  Exceptions:
-
-  - HOCs that proxy down props and hoist propTypes
-
-  ```jsx
-  function HOC(WrappedComponent) {
-    return class Proxy extends React.Component {
-      Proxy.propTypes = {
-        text: PropTypes.string,
-        isLoading: PropTypes.bool
-      };
-
-      render() {
-        return <WrappedComponent {...this.props} />
-      }
-    }
-  }
-  ```
-
-  - Spreading objects with known, explicit props. This can be particularly useful when testing React components with Mocha's beforeEach construct.
-
-  ```jsx
-  export default function Foo {
-    const props = {
-      text: '',
-      isPublished: false
-    }
-
-    return (<div {...props} />);
-  }
-  ```
 
   Notes for use:
   Filter out unnecessary props when possible. Also, use [prop-types-exact](https://www.npmjs.com/package/prop-types-exact) to help prevent bugs.
